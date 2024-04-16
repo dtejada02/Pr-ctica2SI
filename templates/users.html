@@ -793,4 +793,18 @@
   <script src="../static/js/argon-dashboard.min.js?v=2.0.4"></script>
 </body>
 
+</section>
+<section class="u-clearfix u-image u-section-1" id="sec-2aab" data-image-width="1280" data-image-height="792">
+    <div id="vis" style="width: 100%"></div>
+    <script type="text/javascript">
+        var par = {{graphJSON | safe}};
+        var opt = {"renderer": "canvas", "actions": false};  /* Options for the embedding */
+        vegaEmbed("#vis", par, opt);
+    </script>
+    {% autoescape off %}
+    {{ click }}
+    {% endautoescape %}
+
+</section>
+
 </html>
