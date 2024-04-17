@@ -35,6 +35,7 @@
                 <th>Aviso</th>
                 <th>Protección de Datos</th>
                 <th>Total de Políticas</th>
+                <th>Año</th> <!-- Nueva columna para el año -->
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,7 @@
                 <td>{{ row['aviso'] }}</td>
                 <td>{{ row['proteccion_de_datos'] }}</td>
                 <td>{{ row['Politicas'] }}</td>
+                <td>{{ row['creacion'] }}</td>
             </tr>
             {% endfor %}
         </tbody>
