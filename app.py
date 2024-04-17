@@ -41,26 +41,15 @@ def users():
 def users_greater():
     amount = int(request.args.get("amount", default=10))
     with get_db_connection() as conn:
-        df = phisingCLICKS(True, amount, conn)
+        df = criticalUsers(amount, conn)
     return render_template('users_greater.html', df=df)
- 
+
 
 @cmi.route("/users/less/")
 def users_less():
     with get_db_connection() as conn:
         df = all_criticalUsers(conn)
     return render_template('users_less.html', df=df)
-
-
-def phisingCLICKS(greater: bool, top: int, conn):
-    with conn:
-        cursor = conn.cursor()
-        if greater:
-            cursor.execute("SELECT username, telefono, provincia, emails_total, emails_phishing, emails_clicados FROM usuarios WHERE emails_clicados > usuarios.emails_phishing * 0.5 ORDER BY emails_clicados DESC LIMIT ?", (top,))
-        else:
-            cursor.execute("SELECT username, telefono, provincia, emails_total, emails_phishing, emails_clicados FROM usuarios WHERE emails_clicados <= usuarios.emails_phishing * 0.5 ORDER BY emails_clicados DESC LIMIT ?", (top,))
-        rows = cursor.fetchall()
-    return pd.DataFrame(rows, columns=["username", "telefono", "provincia", "emails_total", "emails_phishing", "emails_clicados"])
 
 
 def criticalUsers(top: int, conn):
@@ -89,18 +78,22 @@ def all_criticalUsers(conn):
     with open("weak_pass.txt", "r") as file:
         weak_passwords = set(file.read().split("\n"))
     df = df[df["contrasena"].isin(weak_passwords)]
+    
+    # Ordenar por prob_clicados de mayor a menor
+    df = df.sort_values("prob_clicados", ascending=False)
     return df
 
 
 def unupgradedWEBS(top: int, conn):
     with conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT url, cookies, aviso, proteccion_de_datos FROM webs ORDER BY (cookies + aviso + proteccion_de_datos), creacion DESC LIMIT ?", (top,))
+        cursor.execute("SELECT url, cookies, aviso, proteccion_de_datos, creacion FROM webs ORDER BY (cookies + aviso + proteccion_de_datos), creacion DESC LIMIT ?", (top,))
         rows = cursor.fetchall()
     
-    df = pd.DataFrame(rows, columns=["url", "cookies", "aviso", "proteccion_de_datos"])
+    df = pd.DataFrame(rows, columns=["url", "cookies", "aviso", "proteccion_de_datos", "creacion"])
     df["Politicas"] = df["cookies"] + df["aviso"] + df["proteccion_de_datos"]
     return df
+
 
 if __name__ == '__main__':
     cmi.run()
