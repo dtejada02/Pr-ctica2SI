@@ -32,12 +32,12 @@
         </thead>
         <tbody>
             {% for index, row in df.iterrows() %}
-            {% if row['prob_click'] > 0.5 %}
+            {% if row['prob_clicados'] > 0.5 %}
             <tr>
                 <td>{{ row['username'] }}</td>
                 <td>{{ row['emails_clicados'] }}</td>
                 <td>{{ row['emails_phishing'] }}</td>
-                <td>{{ row['prob_click'] }}</td>
+                <td>{{ row['prob_clicados'] }}</td>
             </tr>
             {% endif %}
             {% endfor %}
