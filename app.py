@@ -4,6 +4,7 @@ import pandas as pd
 from flask import Flask, render_template, request
 import altair as alt
 from hashlib import md5
+import requests
 
 cmi = Flask(__name__, template_folder='templates', static_folder='static')
 cmi.config['SECRET_KEY'] = '1'
@@ -93,6 +94,27 @@ def unupgradedWEBS(top: int, conn):
     df = pd.DataFrame(rows, columns=["url", "cookies", "aviso", "proteccion_de_datos", "creacion"])
     df["Politicas"] = df["cookies"] + df["aviso"] + df["proteccion_de_datos"]
     return df
+
+##### EJERCICIO 3 #####
+
+@cmi.route("/vulnerabilities/")
+def vulnerabilitiesCVE():
+    urlCVE = "https://cve.circl.lu/api/last"
+    response = requests.get(urlCVE)
+
+    if response.status_code == 200:
+        data = response.json()
+        vulnerabilities = []
+        for cve in data[:10]:  # Obtener solo los primeros 10 elementos
+            cve_id = cve["id"]
+            description = cve["summary"]
+            date = cve["Published"]
+            vulnerabilities.append({"CVE ID": cve_id, "Description": description, "Published Date": date})
+
+        return render_template('vulnerabilities.html', vulnerabilities=vulnerabilities)
+    else:
+        return f"Error al obtener las vulnerabilidades: {response.text}", 500
+
 
 
 if __name__ == '__main__':
