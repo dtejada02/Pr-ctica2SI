@@ -109,7 +109,7 @@ def vulnerabilitiesCVE():
             cve_id = cve["id"]
             description = cve["summary"]
             date = cve["Published"]
-            vulnerabilities.append({"CVE ID": cve_id, "Description": description, "Published Date": date})
+            vulnerabilities.append({"CVE ID": cve_id, "Descripcion": description, "Fecha de publicacion": date})
 
         return render_template('vulnerabilities.html', vulnerabilities=vulnerabilities)
     else:
