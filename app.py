@@ -1,11 +1,14 @@
 import sqlite3
 import json
-
 import joblib
 import pandas as pd
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 import altair as alt
 from hashlib import md5
+
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from io import BytesIO
 
 cmi = Flask(__name__, template_folder='templates', static_folder='static')
 cmi.config['SECRET_KEY'] = '1'
@@ -95,6 +98,7 @@ def unupgradedWEBS(top: int, conn):
     df["Politicas"] = df["cookies"] + df["aviso"] + df["proteccion_de_datos"]
     return df
 
+
 @cmi.route("/usuariosIA", methods=["GET", "POST"])
 def usuarios_ia():
     if request.method == "POST":
@@ -115,6 +119,44 @@ def usuarios_ia():
         return render_template('resultado_usuariosIA.html', resultado=resultado)
     return render_template('usuariosIA.html')
 
+
+
+@cmi.route('/descargar-reporte-usuarios-criticos/')
+def descargar_reporte_usuarios_criticos():
+    with get_db_connection() as conn:
+        df = criticalUsers(10, conn)
+
+    buffer = BytesIO()
+
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    p.drawString(100, height - 40, "Reporte de Usuarios Críticos")
+
+    y_position = height - 60
+    x_position = 50
+
+    p.drawString(x_position, y_position, "Usuario")
+    p.drawString(x_position + 200, y_position, "Emails Clicados")
+    p.drawString(x_position + 300, y_position, "Emails Phishing")
+    p.drawString(x_position + 400, y_position, "Probabilidad de Click")
+
+    for index, row in df.iterrows():
+        y_position -= 20
+        p.drawString(x_position, y_position, row['username'])
+        p.drawString(x_position + 200, y_position, str(row['emails_clicados']))
+        p.drawString(x_position + 300, y_position, str(row['emails_phishing']))
+        p.drawString(x_position + 400, y_position, str(row['prob_clicados']))
+
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+
+    response = make_response(buffer.getvalue())
+    buffer.close()
+    response.headers['Content-Disposition'] = 'attachment; filename=reporte_usuarios_criticos.pdf'
+    response.mimetype = 'application/pdf'
+    return response
 
 
 if __name__ == '__main__':
