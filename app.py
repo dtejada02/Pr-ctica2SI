@@ -6,10 +6,13 @@ import requests
 from flask import Flask, render_template, request, make_response
 import altair as alt
 from hashlib import md5
-
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from io import BytesIO
+from algorithm_critical_user import linearRegressionUser
+from algorithm_critical_user import decisionTreeUser
+from algorithm_critical_user import randomForestUser
+
 
 cmi = Flask(__name__, template_folder='templates', static_folder='static')
 cmi.config['SECRET_KEY'] = '1'
@@ -20,6 +23,7 @@ def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
+
 
 @cmi.route("/")
 def index():
@@ -83,7 +87,7 @@ def all_criticalUsers(conn):
     with open("weak_pass.txt", "r") as file:
         weak_passwords = set(file.read().split("\n"))
     df = df[df["contrasena"].isin(weak_passwords)]
-    
+
     # Ordenar por prob_clicados de mayor a menor
     df = df.sort_values("prob_clicados", ascending=False)
     return df
@@ -92,9 +96,11 @@ def all_criticalUsers(conn):
 def unupgradedWEBS(top: int, conn):
     with conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT url, cookies, aviso, proteccion_de_datos, creacion FROM webs ORDER BY (cookies + aviso + proteccion_de_datos), creacion DESC LIMIT ?", (top,))
+        cursor.execute(
+            "SELECT url, cookies, aviso, proteccion_de_datos, creacion FROM webs ORDER BY (cookies + aviso + proteccion_de_datos), creacion DESC LIMIT ?",
+            (top,))
         rows = cursor.fetchall()
-    
+
     df = pd.DataFrame(rows, columns=["url", "cookies", "aviso", "proteccion_de_datos", "creacion"])
     df["Politicas"] = df["cookies"] + df["aviso"] + df["proteccion_de_datos"]
     return df
@@ -141,6 +147,25 @@ def usuarios_ia():
 
         return render_template('resultado_usuariosIA.html', resultado=resultado)
     return render_template('usuariosIA.html')
+
+
+@cmi.route("/usuariosAlgorithm",  methods=["GET", "POST"])
+def usuarios_algorit():
+    if request.method == "POST":
+
+        phishing = int(request.form['phishing'])
+        clicados = int(request.form['clicados'])
+        tipo = str(request.form['tipo'])
+        if tipo == 'linearRegression':
+            resultado = linearRegressionUser(phishing, clicados)
+        elif tipo == 'randomForest':
+            resultado = randomForestUser(phishing, clicados)
+        elif tipo == 'decisionTree':
+            resultado = decisionTreeUser(phishing, clicados)
+
+        return render_template('resultado_usuariosIA.html', resultado=resultado)
+
+    return render_template('users_algorithm.html')
 
 
 
