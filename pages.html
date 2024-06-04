@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Páginas Web Desactualizadas</title>
+    <style>
+        /* Copia el estilo del primer ejemplo */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px; /* Añadido margen inferior */
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+            background-color: #ffffff; /* Establecer el fondo de las celdas en blanco */
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Añadir margen al botón */
+        button,
+        .back-button {
+            margin-top: 20px;
+            margin-bottom: 20px; /* Añadido margen inferior */
+            margin-right: 20px; /* Añadido margen derecho */
+            margin-left: 20px; /* Añadido margen izquierdo */
+        }
+
+        /* Estilo para el botón de volver */
+        .back-button {
+            display: inline-block; /* Cambio a inline-block para que ocupe solo el espacio necesario */
+            background-color: #5e72e4;
+            color: white;
+            padding: 12px 24px; /* Ajuste del padding */
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #324cdd;
+        }
+    </style>
+    <!-- Agrega enlaces a los estilos externos -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="../static/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
+    <link id="pagestyle" href="../static/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+</head>
+
+<body class="g-sidenav-show bg-gray-100">
+    <div class="min-height-300 bg-primary position-absolute w-100"></div>
+    <main class="main-content position-relative border-radius-lg">
+        <div class="container-fluid py-4">
+            <h1>Páginas Web Desactualizadas</h1>
+            <form action="/pages/" method="get">
+                <label for="amount">Cantidad de páginas a mostrar:</label>
+                <input type="number" id="amount" name="amount" min="1">
+                <button type="submit">Mostrar</button>
+            </form>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Cookies</th>
+                        <th>Aviso</th>
+                        <th>Protección de Datos</th>
+                        <th>Total de Políticas</th>
+                        <th>Año</th> <!-- Nueva columna para el año -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, row in df.iterrows() %}
+                    <tr class="bold-text">
+                        <td>{{ row['url'] }}</td>
+                        <td>{{ row['cookies'] }}</td>
+                        <td>{{ row['aviso'] }}</td>
+                        <td>{{ row['proteccion_de_datos'] }}</td>
+                        <td>{{ row['Politicas'] }}</td>
+                        <td>{{ row['creacion'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <!-- Botón para volver al inicio -->
+    <a href="/" class="back-button">Volver al Inicio</a>
+</body>
+
+</html>

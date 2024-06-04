@@ -1,11 +1,8 @@
 import sqlite3
-import json
 import joblib
 import pandas as pd
 import requests
 from flask import Flask, render_template, request, make_response
-import altair as alt
-from hashlib import md5
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from io import BytesIO
