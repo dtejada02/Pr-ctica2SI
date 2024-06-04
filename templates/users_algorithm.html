@@ -3,6 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Es Critico?</title>
+    <link rel="apple-touch-icon" sizes="76x76" href="../static/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../static/img/favicon.png">
+    <!-- Fonts and icons -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="../static/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
+    <link id="pagestyle" href="../static/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+    <style>
+        /* Aumentar el ancho del aside */
+        .sidenav {
+            width: 700px;
+        }
+        
+        /* Ajustar el contenido principal para que se ajuste al nuevo ancho del aside */
+        .main-content {
+            margin-left: 700px; /* Debe coincidir con el ancho del aside */
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 20px; /* Añadido margen */
+            padding: 0;
+        }
+
+        .container-fluid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"],
+        .back-button {
+            background-color: #5e72e4;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover,
+        .back-button:hover {
+            background-color: #324cdd;
+        }
+    </style>
 </head>
 <body>
     <h1>Introduce Usuario para test</h1>
@@ -37,5 +114,8 @@
 
         <input type="submit" value="Test">
     </form>
+
+    <!-- Botón para volver al index.html -->
+    <a href="/" class="back-button">Volver al Inicio</a>
 </body>
 </html>

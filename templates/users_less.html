@@ -1,47 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="76x76" href="../static/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../static/img/favicon.png">
     <title>Usuarios Críticos con Probabilidad de Clic Menor o Igual al 50%</title>
+    <!-- Fonts and icons -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="../static/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
+    <link id="pagestyle" href="../static/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
     <style>
         table {
             border-collapse: collapse;
             width: 100%;
+            margin-bottom: 20px;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
+            background-color: #ffffff;
         }
+
         th {
             background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .bold-text {
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #5e72e4;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #324cdd;
+        }
+
+        .back-button {
+            background-color: #5e72e4;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #324cdd;
         }
     </style>
 </head>
-<body>
-    <h1>Usuarios Críticos con Probabilidad de Click Menor o Igual al 50%</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Usuario</th>
-                <th>Emails Clicados</th>
-                <th>Emails Phishing</th>
-                <th>Probabilidad de Click</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for index, row in df.iterrows() %}
-            {% if row['prob_clicados'] <= 0.5 %}
-            <tr>
-                <td>{{ row['username'] }}</td>
-                <td>{{ row['emails_clicados'] }}</td>
-                <td>{{ row['emails_phishing'] }}</td>
-                <td>{{ row['prob_clicados'] }}</td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+
+<body class="g-sidenav-show bg-gray-100">
+    <div class="min-height-300 bg-primary position-absolute w-100" style="background-color: #5e72e4;"></div>
+    <main class="main-content position-relative border-radius-lg">
+        <div class="container-fluid py-4">
+            <h1>Usuarios Críticos con Probabilidad de Click Menor o Igual al 50%</h1>
+            <form action="/users/" method="get">
+                <label for="amount">Cantidad de usuarios críticos a mostrar:</label>
+                <input type="number" id="amount" name="amount" min="1">
+                <button type="submit">Mostrar</button>
+            </form>
+
+            <div>
+                <a href="/users/greater/"><button>Mostrar usuarios > 50%</button></a>
+                <a href="/users/less/"><button>Mostrar usuarios <= 50%</button></a>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Emails Clicados</th>
+                        <th>Emails Phishing</th>
+                        <th>Probabilidad de Click</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, row in df.iterrows() %}
+                    {% if row['prob_clicados'] <= 0.5 %}
+                    <tr class="bold-text">
+                        <td>{{ row['username'] }}</td>
+                        <td>{{ row['emails_clicados'] }}</td>
+                        <td>{{ row['emails_phishing'] }}</td>
+                        <td>{{ row['prob_clicados'] }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div>
+                <a href="/descargar-reporte-usuarios-criticos/"><button>Descargar Reporte de Usuarios Críticos</button></a>
+                <a href="/" class="back-button">Volver al Inicio</a>
+            </div>
+        </div>
+        <footer class="footer pt-3">
+            <div class="container-fluid">
+                <div class="row align-items-center justify-content-lg-between">
+                    <div class="col-lg-6 mb-lg-0 mb-4">
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
 </body>
+
 </html>
