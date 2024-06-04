@@ -1,68 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vulnerabilities</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vulnerabilidades</title>
     <style>
-        /* Estilo para el cuerpo y la fuente */
-        body {
-            font-family: 'Open Sans', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fe;
-            color: #333;
-        }
-
-        /* Contenedor principal */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Estilo para la tabla */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        th {
-            background-color: #f8f9fe;
-            font-weight: bold;
-        }
-
-        /* Estilo para las celdas con fondo blanco */
-        td {
-            background-color: white;
-        }
-
-        /* Estilo para el encabezado */
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
+        button,
+        .back-button {
+            margin-top: 20px;
+            margin-bottom: 20px; /* Añadido margen inferior */
+            margin-right: 20px; /* Añadido margen derecho */
+            margin-left: 20px; /* Añadido margen izquierdo */
         }
 
         /* Estilo para el botón de volver */
         .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px;
-            text-align: center;
+            display: inline-block; /* Cambio a inline-block para que ocupe solo el espacio necesario */
             background-color: #5e72e4;
-            color: #fff;
-            text-decoration: none;
+            color: white;
+            padding: 12px 24px; /* Ajuste del padding */
+            border: none;
             border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 1rem;
             transition: background-color 0.3s;
         }
 
@@ -70,31 +31,28 @@
             background-color: #324cdd;
         }
     </style>
-</head>
+  <link rel="stylesheet" href="/static/css/styleTable.css"> </head>
 <body>
-    <div class="container">
-        <h1>Últimas Vulnerabilidades</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>CVE ID</th>
-                    <th>Descripción</th>
-                    <th>Fecha de publicación</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for vulnerability in vulnerabilities %}
-                <tr>
-                    <td>{{ vulnerability['CVE ID'] }}</td>
-                    <td>{{ vulnerability['Descripcion'] }}</td>
-                    <td>{{ vulnerability['Fecha de publicacion'] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Botón para volver al inicio -->
-    <a href="/" class="back-button">Volver al Inicio</a>
+  <div class="container">
+    <h2>Últimas Vulnerabilidades</h2>
+    <ul class="responsive-table">
+      <li class="table-header">
+        <div class="col col-1">CVE</div>
+        <div class="col col-2">Descripción</div>
+        <div class="col col-3">Fecha de publicación</div>
+      </li>
+      {% for vulnerability in vulnerabilities %}
+      <li class="table-row">
+        <div class="col col-1">
+          <a href="{{ vulnerability['link'] }}">{{vulnerability['CVE ID']}}</a>
+        </div>
+        <div class="col col-2">{{vulnerability['Descripcion']}}</div>
+        <div class="col col-3">{{vulnerability['Fecha de publicacion']}}</div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <!-- Botón para volver al inicio -->
+  <a href="/" class="back-button">Volver al Inicio</a>
 </body>
 </html>
