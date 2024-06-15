@@ -1,16 +1,71 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado de Clasificación</title>
+    <link rel="apple-touch-icon" sizes="76x76" href="../static/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../static/img/favicon.png">
+    <!-- Fonts and icons -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="../static/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link id="pagestyle" href="../static/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 20px; /* Añadido margen */
+            padding: 0;
+        }
+
+        .container-fluid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo para el botón de volver */
+        .back-button {
+            display: inline-block; /* Cambio a inline-block para que ocupe solo el espacio necesario */
+            margin-top: 10px; /* Añadido margen arriba */
+            margin-right: 20px; /* Añadido margen derecho */
+            background-color: #5e72e4;
+            color: white;
+            padding: 12px 24px; /* Ajuste del padding */
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #324cdd;
+        }
+    </style>
 </head>
 <body>
-    <h1>Resultado de Clasificación</h1>
-    {% if resultado == 1 %}
-    <p>El usuario es crítico.</p>
-    {% else %}
-    <p>El usuario no es crítico.</p>
-    {% endif %}
-    <a href="/">Volver al inicio</a>
+    <div class="container-fluid">
+        <h1>Resultado de Clasificación</h1>
+        {% if resultado == 1 %}
+        <p>El usuario es crítico.</p>
+        {% else %}
+        <p>El usuario no es crítico.</p>
+        {% endif %}
+        <a href="/" class="back-button">Volver al inicio</a>
+    </div>
 </body>
 </html>
