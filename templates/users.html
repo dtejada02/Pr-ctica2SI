@@ -112,7 +112,7 @@
       
       <!-- Botones -->
       <div>
-        <a href="/descargar-reporte-usuarios-criticos/"><button>Descargar Reporte de Usuarios Críticos</button></a>
+        <a href="/descargar-reporte-usuarios-criticos/?amount={{ request.args.get('amount', 10) }}"><button>Descargar Reporte de Usuarios Críticos</button></a>
         <a href="/" class="back-button">Volver al Inicio</a>
       </div>
     </div>

@@ -167,8 +167,23 @@ def usuarios_algorit():
 
 @cmi.route('/descargar-reporte-usuarios-criticos/')
 def descargar_reporte_usuarios_criticos():
-    with get_db_connection() as conn:
-        df = criticalUsers(10, conn)
+    referer = request.headers.get('Referer')
+    amount = request.args.get('amount', type=int, default=10)
+
+    if referer and 'greater' in referer:
+        with get_db_connection() as conn:
+            df = criticalUsers(None, conn)
+            df = df[df['prob_clicados'] > 0.5]
+    elif referer and 'less' in referer:
+        with get_db_connection() as conn:
+            df = all_criticalUsers(conn)
+            df = df[df['prob_clicados'] <= 0.5]
+    else:
+        with get_db_connection() as conn:
+            df = criticalUsers(amount, conn)
+
+    # Limitar el DataFrame df a la cantidad especificada por el usuario
+    df = df.head(amount)
 
     buffer = BytesIO()
 
@@ -198,9 +213,12 @@ def descargar_reporte_usuarios_criticos():
 
     response = make_response(buffer.getvalue())
     buffer.close()
-    response.headers['Content-Disposition'] = 'attachment; filename=reporte_usuarios_criticos.pdf'
+    response.headers['Content-Disposition'] = f'attachment; filename=reporte_usuarios_criticos_{amount}.pdf'
     response.mimetype = 'application/pdf'
     return response
+
+
+
 
 
 if __name__ == '__main__':
