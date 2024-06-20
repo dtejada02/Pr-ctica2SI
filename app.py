@@ -1,5 +1,6 @@
 import sqlite3
 import joblib
+import numpy as np
 import pandas as pd
 import requests
 from flask import Flask, render_template, request, make_response
@@ -13,7 +14,7 @@ from algorithm_critical_user import randomForestUser
 
 cmi = Flask(__name__, template_folder='templates', static_folder='static')
 cmi.config['SECRET_KEY'] = '1'
-modelo = joblib.load('modelo_usuario_critico.pkl')
+model = joblib.load('model.pkl')
 
 
 def get_db_connection():
@@ -124,25 +125,22 @@ def vulnerabilitiesCVE():
     else:
         return f"Error al obtener las vulnerabilidades: {response.text}", 500
 
-@cmi.route("/usuariosIA", methods=["GET", "POST"])
-def usuarios_ia():
-    if request.method == "POST":
-        phishing_ratio = float(request.form['phishing_ratio'])
-        clicked_ratio = float(request.form['clicked_ratio'])
-        avg_daily_connections = float(request.form['avg_daily_connections'])
-        ip_diversity = int(request.form['ip_diversity'])
-
-        user_df = pd.DataFrame([{
-            'phishing_ratio': phishing_ratio,
-            'clicked_ratio': clicked_ratio,
-            'avg_daily_connections': avg_daily_connections,
-            'ip_diversity': ip_diversity
-        }])
-
-        resultado = modelo.predict(user_df)[0]
-
-        return render_template('resultado_usuariosIA.html', resultado=resultado)
+@cmi.route('/usuariosIA')
+def usuarios_IA():
     return render_template('usuariosIA.html')
+@cmi.route('/predict', methods=['POST'])
+def predict():
+    total_emails = float(request.form['total_emails'])
+    phishing_emails = float(request.form['phishing_emails'])
+    clicked_emails = float(request.form['clicked_emails'])
+    ips_count = float(request.form['total_ip_addresses'])  # Nuevo campo para el total de direcciones IP
+
+    input_data = np.array([total_emails, phishing_emails, clicked_emails, ips_count]).reshape(1, -1)
+
+    prediction = model.predict(input_data)[0]
+
+    return render_template('resultado_usuariosIA.html', resultado=prediction)
+
 
 
 @cmi.route("/usuariosAlgorithm",  methods=["GET", "POST"])
@@ -182,7 +180,6 @@ def descargar_reporte_usuarios_criticos():
         with get_db_connection() as conn:
             df = criticalUsers(amount, conn)
 
-    # Limitar el DataFrame df a la cantidad especificada por el usuario
     df = df.head(amount)
 
     buffer = BytesIO()

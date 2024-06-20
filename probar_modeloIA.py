@@ -1,7 +1,8 @@
 import json
 import pandas as pd
-from sklearn.cluster import KMeans
 import joblib
+
+model = joblib.load('model.pkl')
 
 with open('users.json') as f:
     data = json.load(f)
@@ -30,7 +31,13 @@ df = pd.DataFrame({
 
 X = df[['total_emails', 'phishing_emails', 'cliclados_emails', 'ips_count']].copy()
 
-kmeans = KMeans(n_clusters=2, random_state=42)
-kmeans.fit(X)
+y_pred = model.predict(X)
 
-joblib.dump(kmeans, 'model.pkl')
+
+cluster_labels = {0: 'No Crítico', 1: 'Crítico'}  # Cambia esto según los resultados observados
+y_pred_mapped = [cluster_labels[label] for label in y_pred]
+
+df['prediccion'] = y_pred_mapped
+
+for index, row in df.iterrows():
+    print(f"Usuario: {row['usuario']}, Predicción: {row['prediccion']}")
