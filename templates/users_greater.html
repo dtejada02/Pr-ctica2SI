@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../static/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../static/img/favicon.png">
-  <title>Usuarios Críticos</title>
+  <title>Usuarios Críticos con Probabilidad de Click Mayor al 50%</title>
   <!-- Fonts and icons -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <link href="../static/css/nucleo-icons.css" rel="stylesheet" />
@@ -15,10 +15,34 @@
   <link href="../static/css/nucleo-svg.css" rel="stylesheet" />
   <link id="pagestyle" href="../static/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" />
   <style>
-    table {
-      border-collapse: collapse;
+    /* Ajustes generales */
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f7f8fc;
+    }
+
+    .main-content {
+      background-color: #5e72e4;
       width: 100%;
-      margin-bottom: 20px; /* Añadido margen inferior */
+      max-width: 800px;
+      padding: 20px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     th,
@@ -26,11 +50,13 @@
       border: 1px solid #dddddd;
       text-align: left;
       padding: 8px;
-      background-color: #ffffff; /* Establecer el fondo de las celdas en blanco */
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      color: #525f7f;
     }
 
     th {
-      background-color: #f2f2f2;
+      background-color: #f6f9fc;
       font-weight: bold;
     }
 
@@ -42,12 +68,12 @@
     button {
       background-color: #5e72e4;
       color: white;
-      padding: 12px 24px; /* Ajuste del padding */
+      padding: 12px 24px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-size: 1rem;
-      margin-top: 20px; /* Añadido margen arriba */
+      margin-top: 20px;
     }
 
     button:hover {
@@ -58,13 +84,13 @@
     .back-button {
       background-color: #5e72e4;
       color: white;
-      padding: 12px 24px; /* Ajuste del padding */
+      padding: 12px 24px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-size: 1rem;
-      margin-top: 20px; /* Añadido margen arriba */
-      margin-left: 20px; /* Separación del margen izquierdo */
+      margin-top: 20px;
+      margin-left: 20px;
     }
 
     .back-button:hover {
@@ -73,10 +99,9 @@
   </style>
 </head>
 
-<body class="g-sidenav-show bg-gray-100">
-  <div class="min-height-300 bg-primary position-absolute w-100" style="background-color: #5e72e4;"></div>
-  <main class="main-content position-relative border-radius-lg">
-    <div class="container-fluid py-4">
+<body>
+  <div class="main-content">
+    <div class="container-fluid">
       <h1>Usuarios Críticos con Probabilidad de Click Mayor al 50%</h1>
       <form action="/users/" method="get">
         <label for="amount">Cantidad de usuarios críticos a mostrar:</label>
@@ -113,19 +138,10 @@
       </table>
 
       <div>
-        <a href="/descargar-reporte-usuarios-criticos/"><button>Descargar Reporte de Usuarios Críticos</button></a>
         <a href="/" class="back-button">Volver al Inicio</a>
       </div>
     </div>
-    <footer class="footer pt-3">
-      <div class="container-fluid">
-        <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6 mb-lg-0 mb-4">
-          </div>
-        </div>
-      </div>
-    </footer>
-  </main>
+  </div>
 </body>
 
 </html>
